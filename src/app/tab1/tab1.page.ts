@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { delay, map, Observable, of, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -11,41 +10,35 @@ export class Tab1Page implements OnInit {
 
   public selectedMapSubCatControl = new FormControl<string | null>(null);
 
-  public options = ['1', '2', '3', '4', '5', '6', '7', '8']
+  public options = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
   public static readonly VALUES = ['A', 'B', 'C', 'D', 'E'];
-  public values$: Observable<string[]> = of(Tab1Page.VALUES).pipe(delay(50));
+  public values$?: Promise<string[]>;
 
   constructor() {}
 
-  ngOnInit() {
-    this.selectedMapSubCatControl.valueChanges.pipe(
-      startWith(null), // Start with an initial value to trigger the shuffle immediately on init
-      switchMap(() => of(Tab1Page.VALUES)), // Convert the static VALUES array into an observable
-      map(values => this.shuffleArray(values)), // Map each emission to a shuffled version of VALUES
-      delay(50) // Delay the emission if needed (optional)
-    ).subscribe((shuffledValues) => {
-      this.values$ = of(shuffledValues)
+  async ngOnInit() {
+    this.values$ = this.shuffleArrayAsync(Tab1Page.VALUES);
+
+    this.selectedMapSubCatControl.valueChanges.subscribe(async () => {
+      this.values$ = this.shuffleArrayAsync(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
     });
   }
 
-  shuffleArray(array: string[]): string[] {
-    let currentIndex = array.length, temporaryValue, randomIndex;
+  async shuffleArrayAsync(array: string[]): Promise<string[]> {
+    let shuffledArray = [...array]; // Create a copy of the array to avoid mutating the original array
+    let currentIndex = shuffledArray.length, temporaryValue, randomIndex;
 
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-      // Pick a remaining element...
+    while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
 
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      temporaryValue = shuffledArray[currentIndex];
+      shuffledArray[currentIndex] = shuffledArray[randomIndex];
+      shuffledArray[randomIndex] = temporaryValue;
     }
 
-    return array;
+    return shuffledArray;
   }
 
 }

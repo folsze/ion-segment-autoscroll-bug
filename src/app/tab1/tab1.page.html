@@ -9,8 +9,8 @@
 <ion-content [fullscreen]="true">
   <ion-segment class="rounded-none" [scrollable]="true" [formControl]="selectedMapSubCatControl" mode="ios">
     <ion-segment-button *ngFor="let mapSubCat of options" [value]="mapSubCat">
-      <span class="textual-content flex flex-col gap-1 items-center">
-        <span class="text-3xl">{{mapSubCat}}</span>
+      <span class="h-[80px] textual-content flex flex-col gap-1 items-center">
+        <span style="font-size: 30px">{{mapSubCat}}</span>
       </span>
     </ion-segment-button>
   </ion-segment>
