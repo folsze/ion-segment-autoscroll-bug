@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-segment class="rounded-none" [scrollable]="true" [formControl]="selectedMapSubCatControl" mode="ios">
+  <ion-segment #segment class="rounded-none" [scrollable]="true" [formControl]="selectedMapSubCatControl" mode="ios" (ionChange)="onSegmentChange($event)">
     <ion-segment-button *ngFor="let mapSubCat of options" [value]="mapSubCat">
       <span class="h-[80px] textual-content flex flex-col gap-1 items-center">
         <span style="font-size: 30px">{{mapSubCat}}</span>

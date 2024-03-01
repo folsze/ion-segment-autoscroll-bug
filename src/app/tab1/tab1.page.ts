@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { IonSegment } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page implements OnInit {
+export class Tab1Page implements OnInit, AfterViewInit {
+  @ViewChild('segment') segment?: IonSegment;
 
   public selectedMapSubCatControl = new FormControl<string | null>(null);
 
@@ -18,14 +20,14 @@ export class Tab1Page implements OnInit {
   constructor() {}
 
   async ngOnInit() {
-    this.values = this.shuffleArrayAsync(Tab1Page.VALUES);
+    this.values = this.shuffleArray(Tab1Page.VALUES);
 
     this.selectedMapSubCatControl.valueChanges.subscribe(async () => {
-      this.values = this.shuffleArrayAsync(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
+      // this.values = this.shuffleArray(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
     });
   }
 
-  shuffleArrayAsync(array: string[]): string[] {
+  shuffleArray(array: string[]): string[] {
     let shuffledArray = [...array]; // Create a copy of the array to avoid mutating the original array
     let currentIndex = shuffledArray.length, temporaryValue, randomIndex;
 
@@ -39,6 +41,20 @@ export class Tab1Page implements OnInit {
     }
 
     return shuffledArray;
+  }
+
+  onSegmentChange($event: any) {
+    console.log('000', $event);
+    // this.values = this.shuffleArray(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
+  }
+
+  ngAfterViewInit() {
+    if (!this.segment) {
+      throw new Error('ERROR');
+    }
+    this.segment.ionChange.subscribe(() => {
+      this.values = this.shuffleArray(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
+    });
   }
 
 }
