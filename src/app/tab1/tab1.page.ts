@@ -13,19 +13,19 @@ export class Tab1Page implements OnInit {
   public options = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
   public static readonly VALUES = ['A', 'B', 'C', 'D', 'E'];
-  public values$?: Promise<string[]>;
+  public values?: string[];
 
   constructor() {}
 
   async ngOnInit() {
-    this.values$ = this.shuffleArrayAsync(Tab1Page.VALUES);
+    this.values = this.shuffleArrayAsync(Tab1Page.VALUES);
 
     this.selectedMapSubCatControl.valueChanges.subscribe(async () => {
-      this.values$ = this.shuffleArrayAsync(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
+      this.values = this.shuffleArrayAsync(Tab1Page.VALUES); // TODO: comment this line out if you want to see the bug disappear
     });
   }
 
-  async shuffleArrayAsync(array: string[]): Promise<string[]> {
+  shuffleArrayAsync(array: string[]): string[] {
     let shuffledArray = [...array]; // Create a copy of the array to avoid mutating the original array
     let currentIndex = shuffledArray.length, temporaryValue, randomIndex;
 

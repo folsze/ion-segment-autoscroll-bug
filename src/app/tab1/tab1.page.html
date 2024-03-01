@@ -14,7 +14,7 @@
       </span>
     </ion-segment-button>
   </ion-segment>
-  <ng-container *ngIf="values$ | async as values">
+  <ng-container *ngIf="values">
     {{values | json}}
   </ng-container>
 </ion-content>
